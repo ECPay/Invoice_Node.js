@@ -87,13 +87,13 @@
         <pattern>^.{0,4096}$</pattern>
       </param>
       <param type="String"  require="1" name="ItemPrice">
-        <pattern>^[\d\|]{0,4096}$</pattern>
+        <pattern>^.{0,4096}$</pattern>
       </param>
       <param type="String"  require="1" name="ItemTaxType">
         <pattern>^([1-3\|]{0,4096}|)$</pattern>
       </param>
       <param type="String"  require="1" name="ItemAmount">
-        <pattern>^[\d\|\.]{0,4096}$</pattern>
+        <pattern>^.{0,4096}$</pattern>
       </param>
       <param type="String" require="1" name="ItemRemark" urlencode="1">
         <pattern>^.{0,4096}$</pattern>
@@ -195,13 +195,13 @@
         <pattern>^.{0,4096}$</pattern>
       </param>
       <param type="String"  require="1" name="ItemPrice">
-        <pattern>^[\d\|]{0,4096}$</pattern>
+        <pattern>^.{0,4096}$</pattern>
       </param>
       <param type="String"  require="1" name="ItemTaxType">
         <pattern>^.{0,4096}$</pattern>
       </param>
       <param type="String"  require="1" name="ItemAmount">
-        <pattern>^[\d\|]{0,4096}$</pattern>
+        <pattern>^.{0,4096}$</pattern>
       </param>
       <param type="Opt"  require="1" name="InvType">
         <option>07</option>
@@ -305,13 +305,13 @@
         <pattern>^.{0,4096}$</pattern>
       </param>
       <param type="String"  require="1" name="ItemPrice">
-        <pattern>^[\d\|]{0,4096}$</pattern>
+        <pattern>^.{0,4096}$</pattern>
       </param>
       <param type="String"  require="1" name="ItemTaxType">
         <pattern>^.{0,4096}$$</pattern>
       </param>
       <param type="String"  require="1" name="ItemAmount">
-        <pattern>^[\d\|]{0,4096}$</pattern>
+        <pattern>^.{0,4096}$</pattern>
       </param>
     </Parameters>
   </InvoiceAllowance>
