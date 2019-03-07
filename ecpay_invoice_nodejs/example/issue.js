@@ -5,19 +5,19 @@
 const ecpay_invoice = require('../lib/ecpay_invoice.js');
 // 參數值為[PLEASE MODIFY]者，請在每次測試時給予獨特值
 let base_param = {
-	RelateNumber:"asasscsaDdFY", // 請帶30碼uid, ex: werntfg9os48trhw34etrwerh8ew2r
+	RelateNumber:"ascsajzfgDssasaasddFY", // 請帶30碼uid, ex: werntfg9os48trhw34etrwerh8ew2r
 	CustomerID:"", // 客戶代號，長度為20字元
 	CustomerIdentifier:"", // 統一編號，長度為10字元
 	CustomerName:"綠先生", // 客戶名稱，長度為20字元
-	CustomerAddr:"台北市南港區三重路19-2號6-2樓", // 客戶地址，長度為100字元
+	CustomerAddr:"台北市南港區三重路19-2號6-2樓()", // 客戶地址，長度為100字元
 	CustomerPhone:"0912345678", // 客戶電話，長度為20字元
 	CustomerEmail:"ying.wu@ecpay.com.tw", // 客戶信箱，長度為80字元
 	ClearanceMark:"", // 通關方式，僅可帶入'1'、'2'、''
 	Print:"0", // 列印註記，僅可帶入'0'、'1'
-	Donation:"1", // 捐贈註記，僅可帶入'1'、'2'
-	LoveCode:"123456", // 愛心碼，長度為7字元
-	CarruerType:"", // 載具類別，僅可帶入'1'、'2'、'3'、''
-	CarruerNum:"", // 載具編號，當載具類別為'2'時，長度為16字元，當載具類別為'3'時，長度為7字元
+	Donation:"2", // 捐贈註記，僅可帶入'1'、'2'
+	LoveCode:"", // 愛心碼，長度為7字元
+	CarruerType:"3", // 載具類別，僅可帶入'1'、'2'、'3'、''
+	CarruerNum:"/.234567", // 載具編號，當載具類別為'2'時，長度為16字元，當載具類別為'3'時，長度為7字元
 	TaxType:"1", // 課稅類別，僅可帶入'1'、'2'、'3'、'9'
 	SalesAmount:"401", // 發票金額
 	InvoiceRemark:"", // 備註

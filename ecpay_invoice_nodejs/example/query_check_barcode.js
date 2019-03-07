@@ -5,7 +5,7 @@
 const ecpay_invoice = require('../lib/ecpay_invoice.js');
 // 參數值為[PLEASE MODIFY]者，請在每次測試時給予獨特值
 let base_param = {
-	BarCode:"/RXNOFER" // 手機條碼，長度為7字元
+	BarCode:"/......." // 手機條碼，長度為7字元
 };
 
 let create = new ecpay_invoice();
