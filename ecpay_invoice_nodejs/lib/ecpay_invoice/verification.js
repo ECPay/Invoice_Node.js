@@ -422,13 +422,13 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
                   }
                 }
             }
-            // e 統一編號[CustomerIdentifier]有值時 => CarruerType != 1 or 2 or 3, Donation = 2, Print = 1
+            // e 統一編號[CustomerIdentifier]有值時 => CarruerType != 1 or 2 or 3, Donation = 0, Print = 1
             if (params['CustomerIdentifier'] !== ''){
                 if (params['CarruerType'] === '1' || params['CarruerType'] === '2' || params['CarruerType'] === '3'){
                     throw new ECpayError.ECpayInvoiceRuleViolate(`[CarruerType] Cannot be 1, 2 or 3 when [CustomerIdentifier] is given.`);
                 }
-                if (params['Donation'] !== '2' && params['Print'] !== '1'){
-                  throw new ECpayError.ECpayInvoiceRuleViolate(`[Print] must be 1 and [Donation] must be 2 when [CustomerIdentifier] is given.`);
+                if (params['Donation'] !== '0' && params['Print'] !== '1'){
+                  throw new ECpayError.ECpayInvoiceRuleViolate(`[Print] must be 1 and [Donation] must be 0 when [CustomerIdentifier] is given.`);
                 }
             }
             // [CarruerType]為'' or 1 時 : CarruerNum = '', [CarruerType]為2, CarruerNum = 固定長度為16且格式為2碼大小寫字母加上14碼數字。
@@ -442,7 +442,7 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
                     throw new ECpayError.ECpayInvoiceRuleViolate(`[CarruerNum] must be 2 alphabets and 14 numbers when [CarruerType] is 2.`);
                 }
             } else if (params['CarruerType'] === '3'){
-                if (params['CarruerNum'].match(new RegExp(/^\/[A-Za-z0-9\s+-]{7}$/)) === null){
+                if (params['CarruerNum'].match(new RegExp(/^\/[A-Za-z0-9\s+-.]{7}$/)) === null){
                     throw new ECpayError.ECpayInvoiceRuleViolate(`[CarruerNum] must start with '/' followed by 7 alphabet and number characters when [CarruerType] is 3.`);
                 }
             } else {
@@ -452,7 +452,7 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
             if (params['CarruerType'] !== '' && params['Print'] !== '0'){
                 throw new  ECpayError.ECpayInvoiceRuleViolate(`[Print] must be 0 when [CarruerType] has value.`);
             }
-            // Donation = 1 => LoveCode不能為空, Print = 0, Donation = 2 => LoveCode不能有值
+            // Donation = 1 => LoveCode不能為空, Print = 0, Donation = 0 => LoveCode不能有值
             if (params['Donation'] === '1'){
                 if (params['LoveCode'] === ''){
                     throw new ECpayError.ECpayInvoiceRuleViolate(`[LoveCode] cannot be empty when [Donation] is 1.`);
@@ -460,9 +460,9 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
                 if (params['Print'] !== '0'){
                     throw new ECpayError.ECpayInvoiceRuleViolate(`[Print] must be 0 when [Donation] is 1.`);
                 }
-            } else if (params['Donation'] === '2'){
+            } else if (params['Donation'] === '0'){
               if (params['LoveCode'] !== ''){
-                throw new ECpayError.ECpayInvoiceRuleViolate(`[LoveCode] must be empty when [Donation] is 2.`);
+                throw new ECpayError.ECpayInvoiceRuleViolate(`[LoveCode] must be empty when [Donation] is 0.`);
               }
             }
 
@@ -738,13 +738,13 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
                   }
                 }
             }
-            // e 統一編號[CustomerIdentifier]有值時 => CarruerType != 1 or 2 or 3, Donation = 2, Print = 1
+            // e 統一編號[CustomerIdentifier]有值時 => CarruerType != 1 or 2 or 3, Donation = 0, Print = 1
             if (params['CustomerIdentifier'] !== ''){
                 if (params['CarruerType'] === '1' || params['CarruerType'] === '2' || params['CarruerType'] === '3'){
                     throw new ECpayError.ECpayInvoiceRuleViolate(`[CarruerType] Cannot be 1, 2 or 3 when [CustomerIdentifier] is given.`);
                 }
-                if (params['Donation'] !== '2' && params['Print'] !== '1'){
-                  throw new ECpayError.ECpayInvoiceRuleViolate(`[Print] must be 1 and [Donation] must be 2 when [CustomerIdentifier] is given.`);
+                if (params['Donation'] !== '0' && params['Print'] !== '1'){
+                  throw new ECpayError.ECpayInvoiceRuleViolate(`[Print] must be 1 and [Donation] must be 0 when [CustomerIdentifier] is given.`);
                 }
             }
             // DelayFlag Rules When [DelayFlag] is '1' the [DelayDay] range be between 1 and 15
@@ -769,7 +769,7 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
                     throw new ECpayError.ECpayInvoiceRuleViolate(`[CarruerNum] must be 2 alphabets and 14 numbers when [CarruerType] is 2.`);
                 }
             } else if (params['CarruerType'] === '3'){
-                if (params['CarruerNum'].match(new RegExp(/^\/[A-Za-z0-9\s+-]{7}$/)) === null){
+                if (params['CarruerNum'].match(new RegExp(/^\/[A-Za-z0-9\s+-.]{7}$/)) === null){
                     throw new ECpayError.ECpayInvoiceRuleViolate(`[CarruerNum] must start with '/' followed by 7 alphabet and number characters when [CarruerType] is 3.`);
                 }
             } else {
@@ -779,7 +779,7 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
             if (params['CarruerType'] !== '' && params['Print'] !== '0'){
                 throw new  ECpayError.ECpayInvoiceRuleViolate(`[Print] must be 0 when [CarruerType] has value.`);
             }
-            // Donation = 1 => LoveCode不能為空, Print = 0, Donation = 2 => LoveCode不能有值
+            // Donation = 1 => LoveCode不能為空, Print = 0, Donation = 0 => LoveCode不能有值
             if (params['Donation'] === '1'){
                 if (params['LoveCode'] === ''){
                     throw new ECpayError.ECpayInvoiceRuleViolate(`[LoveCode] cannot be empty when [Donation] is 1.`);
@@ -787,9 +787,9 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
                 if (params['Print'] !== '0'){
                     throw new ECpayError.ECpayInvoiceRuleViolate(`[Print] must be 0 when [Donation] is 1.`);
                 }
-            } else if (params['Donation'] === '2'){
+            } else if (params['Donation'] === '0'){
               if (params['LoveCode'] !== ''){
-                throw new ECpayError.ECpayInvoiceRuleViolate(`[LoveCode] must be empty when [Donation] is 2.`);
+                throw new ECpayError.ECpayInvoiceRuleViolate(`[LoveCode] must be empty when [Donation] is 0.`);
               }
             }
 
