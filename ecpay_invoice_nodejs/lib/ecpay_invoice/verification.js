@@ -473,7 +473,7 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
             // 商品價錢含有管線 => 認為是多樣商品 *ItemCount ， *ItemPrice ， *ItemAmount 逐一用管線分割，計算數量後與第一個比對
             if (params['vat'] === '0'){
               if (!params['ItemPrice'].includes('|')){
-                if (parseFloat(params['ItemAmount']) !== Math.round(parseFloat(params['ItemPrice']) * parseInt(params['ItemCount']) * tax_fee*10)/10){
+                if (parseFloat(params['ItemAmount']) !== Math.round(parseFloat(params['ItemPrice']) * parseInt(params['ItemCount']) * tax_fee*100)/100){
                   throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemPrice] (${params['ItemPrice']}) times [ItemCount] (${params['ItemCount']}) '*' tax (${tax_fee}) subtotal not equal [ItemAmount] (${params['ItemAmount']})`);
                 }
                 // 驗證單筆商品合計是否等於發票金額
@@ -507,7 +507,7 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
                       throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemTaxType] can not be (${vat_tax_arr[index_count]}), Available option: (1, 2, 3).`);
                     }
                   }
-                  if (parseFloat(vat_amount_arr[index_count]) !==  Math.round(parseFloat(vat_price_arr[index_count]) * parseFloat(vat_count_arr[index_count]) * tax_fee*10)/10){
+                  if (parseFloat(vat_amount_arr[index_count]) !==  Math.round(parseFloat(vat_price_arr[index_count]) * parseFloat(vat_count_arr[index_count]) * tax_fee*100)/100){
                     throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemPrice] (${vat_price_arr[index_count]}) times [ItemCount] (${vat_count_arr[index_count]}) '*' tax (${tax_fee}) not match [ItemAmount] (${vat_amount_arr[index_count]})`);
                   }
                   index_count += 1;
@@ -529,7 +529,7 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
             // 含稅扣稅多樣商品時先算稅金加總四捨五入後帶入ItemAmount，且ItemAmount全部金額加總後等於SalesAmount
             if (params['vat'] === '1'){
               if (!params['ItemPrice'].includes('|')){
-                if (parseFloat(params['ItemAmount']) !== Math.round(parseFloat(params['ItemPrice']) * parseFloat(params['ItemCount']) / tax_fee*10)/10){
+                if (parseFloat(params['ItemAmount']) !== Math.round(parseFloat(params['ItemPrice']) * parseFloat(params['ItemCount']) / tax_fee*100)/100){
                   throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemPrice] (${params['ItemPrice']}) times [ItemCount] (${params['ItemCount']}) '/' tax (${tax_fee}) subtotal not equal [ItemAmount] (${params['ItemAmount']})`);
                 }
                 // 驗證單筆商品合計是否等於發票金額
@@ -563,7 +563,7 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
                       throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemTaxType] can not be (${vat_tax_arr[index_count]}), Available option: (1, 2, 3).`);
                     }
                   }
-                  if (parseFloat(vat_amount_arr[index_count]) !== Math.round(parseFloat(vat_price_arr[index_count]) * parseFloat(vat_count_arr[index_count]) / tax_fee*10)/10){
+                  if (parseFloat(vat_amount_arr[index_count]) !== Math.round(parseFloat(vat_price_arr[index_count]) * parseFloat(vat_count_arr[index_count]) / tax_fee*100)/100){
                     throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemPrice] (${vat_price_arr[index_count]}) times [ItemCount] (${vat_count_arr[index_count]}) '/' tax (${tax_fee}) not match [ItemAmount] (${vat_amount_arr[index_count]})`);
                   }
                   index_count += 1;
@@ -796,7 +796,7 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
             let vat_params = vat_params_list;
             // 商品價錢含有管線 => 認為是多樣商品 *ItemCount ， *ItemPrice ， *ItemAmount 逐一用管線分割，計算數量後與第一個比對
             if (!params['ItemPrice'].includes('|')){
-              if (parseFloat(params['ItemAmount']) !== Math.round(parseFloat(params['ItemPrice']) * parseFloat(params['ItemCount']) / tax_fee*10)/10){
+              if (parseFloat(params['ItemAmount']) !== Math.round(parseFloat(params['ItemPrice']) * parseFloat(params['ItemCount']) / tax_fee*100)/100){
                 throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemPrice] (${params['ItemPrice']}) times [ItemCount] (${params['ItemCount']}) '/' tax (${tax_fee}) subtotal not equal [ItemAmount] (${params['ItemAmount']})`);
               }
               // 驗證單筆商品合計是否等於發票金額
@@ -830,7 +830,7 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
                     throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemTaxType] can not be (${vat_tax_arr[index_count]}), Available option: (1, 2, 3).`);
                   }
                 }
-                if (parseFloat(vat_amount_arr[index_count]) !== Math.round(parseFloat(vat_price_arr[index_count]) * parseFloat(vat_count_arr[index_count]) / tax_fee*10)/10){
+                if (parseFloat(vat_amount_arr[index_count]) !== Math.round(parseFloat(vat_price_arr[index_count]) * parseFloat(vat_count_arr[index_count]) / tax_fee*100)/100){
                   throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemPrice] (${vat_price_arr[index_count]}) times [ItemCount] (${vat_count_arr[index_count]}) '/' tax (${tax_fee}) not match [ItemAmount] (${vat_amount_arr[index_count]})`);
                 }
                 index_count += 1;
