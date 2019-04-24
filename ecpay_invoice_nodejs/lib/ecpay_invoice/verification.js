@@ -305,24 +305,10 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
             });
 
             // 2. 比對特殊欄位值相依需求
-            // a [CarruerType]為1 => CustomerID 不能為空
-            if (params['CarruerType'] === '1'){
-                if (params['CustomerID'] === ''){
-                    throw new ECpayError.ECpayInvoiceRuleViolate(`[CustomerID] can not be empty when [CarruryType] is 1.`);
-                }
-            }// [CustomerID]不為空 => CarruerType 不能為空
-            else if (params['CarruerType'] === ''){
-                if (params['CustomerID'] !== ''){
-                    throw new ECpayError.ECpayInvoiceRuleViolate(`[CarruerType] can not be empty when [CustomerID] is given.`);
-                }
-            }
             // b 列印註記[Print]為1 => CustomerName, CustomerAddr 不能為空
             if (params['Print'] === '1'){
                 if (params['CustomerName'] === '' && params['CustomerAddr'] === ''){
                     throw new ECpayError.ECpayInvoiceRuleViolate(`[CustomerName] and [CustomerAddr] can not be empty when [Print] is 1.`);
-                }
-                if (params['CustomerID'] !== ''){
-                    throw new ECpayError.ECpayInvoiceRuleViolate(`[Print] can not be '1' when [CustomerID] is not empty.`);
                 }
                 if (params['CarruerType'] !== '') {
                   throw new ECpayError.ECpayInvoiceRuleViolate(`[Print] can not be '1' when [CarruerType] is not empty.`);
@@ -655,17 +641,6 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
             });
 
             // 2. 比對特殊欄位值相依需求
-            // a [CarruerType]為1 => CustomerID 不能為空
-            if (params['CarruerType'] === '1'){
-                if (params['CustomerID'] === ''){
-                    throw new ECpayError.ECpayInvoiceRuleViolate(`[CustomerID] can not be empty when [CarruryType] is 1.`);
-                }
-            }// [CustomerID]不為空 => CarruerType 不能為空
-            else if (params['CarruerType'] === ''){
-                if (params['CustomerID'] !== ''){
-                    throw new ECpayError.ECpayInvoiceRuleViolate(`[CarruerType] can not be empty when [CustomerID] is given.`);
-                }
-            }
             // b 列印註記[Print]為1 => CustomerName, CustomerAddr 不能為空
             if (params['Print'] === '1'){
                 if (params['CustomerName'] === '' && params['CustomerAddr'] === ''){

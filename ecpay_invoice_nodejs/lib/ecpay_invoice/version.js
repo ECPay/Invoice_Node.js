@@ -3,7 +3,7 @@
  */
 class ECPayInvoiceVersion{
     constructor(){
-        this.version = '1.0.0';
+        this.version = '2.0.0';
     }
 }
 module.exports = ECPayInvoiceVersion;

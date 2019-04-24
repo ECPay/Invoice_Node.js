@@ -28,7 +28,7 @@
         <pattern>^(\d{8}|)$</pattern>
       </param>
       <param type="String"  require="1" name="CustomerName" urlencode="1">
-        <pattern>^.{0,30}$</pattern>
+        <pattern>^.{0,60}$</pattern>
       </param>
       <param type="String"  require="1" name="CustomerAddr" urlencode="1">
         <pattern>^.{0,200}$</pattern>
@@ -136,7 +136,7 @@
         <pattern>^(\d{8}|)$</pattern>
       </param>
       <param type="String"  require="1" name="CustomerName" urlencode="1">
-        <pattern>^.{0,30}$</pattern>
+        <pattern>^.{0,60}$</pattern>
       </param>
       <param type="String"  require="1" name="CustomerAddr" urlencode="1">
         <pattern>^.{0,200}$</pattern>
@@ -282,7 +282,7 @@
         <option>N</option>
       </param>
       <param type="String"  require="1" name="CustomerName" urlencode="1">
-        <pattern>^.{0,30}$</pattern>
+        <pattern>^.{0,60}$</pattern>
       </param>
       <param type="String"  require="1" name="NotifyMail" urlencode="1">
         <pattern>^.{0,100}$</pattern>

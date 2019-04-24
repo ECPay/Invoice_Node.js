@@ -14,7 +14,7 @@ let base_param = {
 	CustomerEmail:"ying.wu@ecpay.com.tw",
 	ClearanceMark:"",
 	Print:"0",
-	Donation:"2",
+	Donation:"0",
 	LoveCode:"",
 	CarruerType:"3",
 	CarruerNum:"/512.457",
