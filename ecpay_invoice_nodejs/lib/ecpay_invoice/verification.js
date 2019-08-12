@@ -1027,6 +1027,138 @@ class InvoiceParamVerify extends InvoiceVerifyBase{
         }
     }
 
+    verify_inv_allowancebycollegiate_param(params){
+        if (params.constructor === Object){
+            // 發票所有參數預設要全帶
+            Object.keys(params).forEach(function (keys) {
+                if (params[keys] === null){
+                    throw new ECpayError.ECpayInvalidParam(`Parameter value cannot be null.`);
+                }
+            });
+            // 1. 比對欄位是否缺乏
+            let basic_param = this.inv_basic_param.sort();
+            let input_param = Object.keys(params).sort();
+            basic_param.forEach(function (pname) {
+                if (input_param.indexOf(pname, 0) === -1){
+                    throw new ECpayError.ECpayInvalidParam(`Lack required param ${pname}`);
+                }
+            });
+
+            // 2. 比對特殊欄位值相依需求
+            // a NotifyPhone和NotifyMail至少一個有值，當AllowanceNotify為A時都為必填
+            if (params['AllowanceNotify'] === 'S'){
+                if (params['NotifyPhone'] === ''){
+                    throw new ECpayError.ECpayInvoiceRuleViolate(`[NotifyPhone] cannot be empty.`);
+                }
+            } else if (params['AllowanceNotify'] === 'E'){
+                if (params['NotifyMail'] === ''){
+                    throw new ECpayError.ECpayInvoiceRuleViolate(`[NotifyMail] cannot be empty.`);
+                }
+            } else if (params['AllowanceNotify'] === 'A'){
+                if (params['NotifyPhone'] === '' || params['NotifyMail'] === ''){
+                    throw new ECpayError.ECpayInvoiceRuleViolate(`[NotifyPhone] and [NotifyMail] can not be empty.`);
+                }
+            }
+
+            let vat_params = ['ItemCount', 'ItemAmount'];
+            // 商品價錢含有管線 => 認為是多樣商品 *ItemCount ， *ItemPrice ， *ItemAmount 逐一用管線分割，計算數量後與第一個比對
+            // 驗證單筆ItemAmount = (ItemPrice * ItemCount)
+            if (!params['ItemPrice'].includes('|')){
+                if (parseFloat(params['ItemAmount']) !== parseFloat(params['ItemPrice']) * parseFloat(params['ItemCount'])){
+                    throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemPrice] (${params['ItemPrice']}) times [ItemCount] (${params['ItemCount']}) subtotal not equal [ItemAmount] (${params['ItemAmount']})`);
+                }
+                // 驗證單筆商品合計是否等於發票金額
+                if (parseInt(params['AllowanceAmount']) !== Math.round(parseFloat(params['ItemAmount']))){
+                    throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemAmount] (${params['ItemAmount']}) not equal [AllowanceAmount] (${params['AllowanceAmount']})`);
+                }
+            } else if (params['ItemPrice'].includes('|')){
+                let vat_cnt = params['ItemPrice'].split('|').length
+                vat_params.forEach(function (param_name){
+                    // Check if there's empty value.
+                    if (params[param_name].match(new RegExp(/(\|\||^\||\|$)/)) !== null){
+                        throw new ECpayError.ECpayInvoiceRuleViolate(`[${param_name}] contains empty value.`);
+                    }
+                    let p_cnt = params[param_name].split('|').length;
+                    if (vat_cnt !== p_cnt){
+                        throw new ECpayError.ECpayInvoiceRuleViolate(`Count of item info [${param_name}] (${p_cnt}) not match count from [ItemPrice] (${vat_cnt}).`);
+                    }
+                });
+                let vat_amount_arr = params['ItemAmount'].split('|');
+                let vat_price_arr = params['ItemPrice'].split('|');
+                let vat_count_arr = params['ItemCount'].split('|');
+                let index_count = 0;
+                vat_price_arr.forEach(function (val){
+                    if (parseFloat(vat_amount_arr[index_count]) !== parseFloat(vat_price_arr[index_count]) * parseFloat(vat_count_arr[index_count])){
+                        throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemPrice] (${vat_price_arr[index_count]}) times [ItemCount] (${vat_count_arr[index_count]}) not match [ItemAmount] (${vat_amount_arr[index_count]})`);
+                    }
+                    index_count += 1;
+                });
+                // Verify ItemAmout subtotal equal SalesAmount
+                let chk_amount_subtotal = 0;
+                vat_amount_arr.forEach(function (val) {
+                    chk_amount_subtotal += parseFloat(val);
+                });
+                if (parseInt(params['AllowanceAmount']) !== Math.round(chk_amount_subtotal)){
+                    throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemAmount] (${vat_amount_arr}) subtotal not equal [AllowanceAmount] (${params['AllowanceAmount']})`);
+                }
+            }
+
+            // 3. 比對商品名稱，數量，單位，價格，tax項目數量是否一致
+            if (params['ItemWord'] === ''){
+                throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemWord] cannot be empty.`);
+            }
+
+            let item_params = ['ItemCount', 'ItemWord', 'ItemPrice', 'ItemAmount'];
+            // 商品名稱含有管線 => 認為是多樣商品 *ItemName, *ItemCount, *ItemWord, *ItemPrice, *ItemAmount逐一用管線分割，計算數量後與第一個比對
+            if (params['ItemName'] === ''){
+                throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemName] is empty.`);
+            } else {
+                if (params['ItemName'].includes('|')){
+                    let item_cnt = params['ItemName'].split('|').length;
+                    item_params.forEach(function (param_name) {
+                        // Check if there's empty value.
+                        if (params[param_name].match(new RegExp(/(\|\||^\||\|$)/)) !== null){
+                            throw new ECpayError.ECpayInvoiceRuleViolate(`[${param_name}] contains empty value.`);
+                        }
+                        let p_cnt = params[param_name].split('|').length;
+                        if (item_cnt !== p_cnt){
+                            throw new ECpayError.ECpayInvoiceRuleViolate(`Count of item info [${param_name}] (${p_cnt}) not match count from [ItemName] (${item_cnt}).`);
+                        }
+                    });
+                    // ItemTaxType 能含有1,3(and at least contains one 1 and other)
+                    let item_tax = params['ItemTaxType'].split('|');
+                    let aval_tax_type = ['1', '3'];
+                    let vio_tax_t = item_tax - aval_tax_type;
+                    if (vio_tax_t === []){
+                        throw new ECpayError.ECpayInvoiceRuleViolate(`Illegal [ItemTaxType]: ${vio_tax_t}`);
+                    }
+                    // if (!item_tax.includes('1')){
+                    //   throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemTaxType] must contain at lease one '1'.`);
+                    // }
+                    // if (item_cnt >= 2){
+                    //   if (!item_tax.includes('2') && !item_tax.includes('3')){
+                    //     throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemTaxType] cannot be all 1 when [TaxType] is 9.`);
+                    //   }
+                    // }
+                    // if (item_tax.includes('2') && item_tax.includes('3')){
+                    //   throw new ECpayError.ECpayInvoiceRuleViolate(`[ItemTaxType] cannot contain 2 and 3 at the same time.`);
+                    // }
+                } else {
+                    // 沒有管線 => 逐一檢查後4項有無管線
+                    item_params.forEach(function (param_name) {
+                        if (params[param_name].includes('|')){
+                            throw new ECpayError.ECpayInvoiceRuleViolate(`Item info [${param_name}] contain pipeline delimiter but there's only one item in param [ItemName].`);
+                        }
+                    });
+                }
+            }
+            // 4. 比對所有欄位Pattern
+            this.verify_param_by_pattern(params, this.all_param_pattern);
+        } else {
+            throw TypeError(`Received argument is not a object.`);
+        }
+    }
+
     verify_inv_issue_invalid_param(params){
         if (params.constructor === Object){
             let basic_param = this.inv_basic_param.sort();
