@@ -48,6 +48,12 @@ class ECpayInvoiceClient{
         let res = this._invoice_pos_proc(parameters, 'InvoiceAllowance');
         return res;
     }
+    ecpay_invoice_allowancebycollegiate(parameters){
+        this._invoice_base_proc(parameters);
+        parameters['TimeStamp'] = (parseInt(this._get_curr_unix_time()) + 120).toString();
+        let res = this._invoice_pos_proc(parameters, 'InvoiceAllowanceByCollegiate');
+        return res;
+    }
 
     ecpay_invoice_issue_invalid(parameters){
         this._invoice_base_proc(parameters);
@@ -90,7 +96,11 @@ class ECpayInvoiceClient{
         } else if (apiname === 'InvoiceAllowance') {
             exclusive_list = ['ItemName', 'ItemWord'];
             verify_invoice_api.verify_inv_allowance_param(params);
-        } else if (apiname === 'InvoiceIssueInvalid') {
+        }else if (apiname === 'InvoiceAllowanceByCollegiate') {
+            exclusive_list = ['ItemName', 'ItemWord'];
+            verify_invoice_api.verify_inv_allowance_param(params);
+        }
+        else if (apiname === 'InvoiceIssueInvalid') {
             exclusive_list = ['Reason'];
             verify_invoice_api.verify_inv_issue_invalid_param(params);
         } else if (apiname === 'InvoiceAllowanceInvalid') {

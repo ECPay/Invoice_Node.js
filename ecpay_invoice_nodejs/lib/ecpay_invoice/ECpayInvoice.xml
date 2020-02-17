@@ -100,7 +100,6 @@
       </param>
       <param type="Opt"  require="1" name="InvType">
         <option>07</option>
-        <option>08</option>
       </param>
       <param type="Opt" require="1" name="vat">
         <option>0</option>
@@ -205,7 +204,6 @@
       </param>
       <param type="Opt"  require="1" name="InvType">
         <option>07</option>
-        <option>08</option>
       </param>
       <param type="Opt" require="1" name="DelayFlag">
         <option>1</option>
@@ -315,6 +313,70 @@
       </param>
     </Parameters>
   </InvoiceAllowance>
+  <InvoiceAllowanceByCollegiate>
+    <ServiceAddress>
+      <url type="Production">https://einvoice.ecpay.com.tw/Invoice/AllowanceByCollegiate</url>
+      <url type="Test">https://einvoice-stage.ecpay.com.tw/Invoice/AllowanceByCollegiate</url>
+    </ServiceAddress>
+    <Config>
+      <switchparam>
+      </switchparam>
+      <optparam>
+      </optparam>
+    </Config>
+    <Parameters>
+      <param  type="String"  require="1" name="TimeStamp">
+        <pattern>^\d{10}$</pattern>
+      </param>
+      <param  type="String"  require="1" name="MerchantID">
+        <pattern>^\d{7,10}$</pattern>
+      </param>
+      <param type="String"  require="1" name="InvoiceNo">
+        <pattern>^[A-Z]{2}\d{8}$</pattern>
+      </param>
+      <param type="Opt" require="1" name="AllowanceNotify">
+        <option>S</option>
+        <option>E</option>
+        <option>A</option>
+        <option>N</option>
+      </param>
+      <param type="String"  require="1" name="CustomerName" urlencode="1">
+        <pattern>^.{0,60}$</pattern>
+      </param>
+      <param type="String"  require="1" name="NotifyMail" urlencode="1">
+        <pattern>^.{0,100}$</pattern>
+      </param>
+      <param type="String"  require="1" name="NotifyPhone">
+        <pattern>^(\d{10,20}|)$</pattern>
+      </param>
+      <param type="Int" require="1" name="AllowanceAmount">
+        <mode>GE</mode> <!--BETWEEN, GE, LE, EXCLUDE  -->
+        <maximum></maximum>
+        <minimal>1</minimal>
+      </param>
+      <param type="String"  require="1" name="ItemName" urlencode="1">
+        <pattern>^.{0,4096}$</pattern>
+      </param>
+      <param type="String"  require="1" name="ItemCount">
+        <pattern>^[\d\|]{0,4096}$</pattern>
+      </param>
+      <param type="String"  require="1" name="ItemWord" urlencode="1">
+        <pattern>^.{0,4096}$</pattern>
+      </param>
+      <param type="String"  require="1" name="ItemPrice">
+        <pattern>^.{0,4096}$</pattern>
+      </param>
+      <param type="String"  require="1" name="ItemTaxType">
+        <pattern>^.{0,4096}$$</pattern>
+      </param>
+      <param type="String"  require="1" name="ItemAmount">
+        <pattern>^.{0,4096}$</pattern>
+      </param>
+      <param  type="String"  require="1" name="ReturnURL">
+        <pattern>^.{0,200}$</pattern>
+      </param>
+    </Parameters>
+  </InvoiceAllowanceByCollegiate>
   <InvoiceIssueInvalid>
     <ServiceAddress>
       <url type="Production">https://einvoice.ecpay.com.tw/Invoice/IssueInvalid</url>
