@@ -1,6 +1,6 @@
 {
   "name": "ecpay_invoice_nodejs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "綠界電子發票串接用SDK",
   "main": "ecpay_invoice.js",
   "dependencies": {
