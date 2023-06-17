@@ -33,7 +33,7 @@ let base_param = {
 	Tsr:"test20190551305776", // 交易單號，不可重複，請帶30碼uid, ex: nws349sher9toreterstuferyo345g，為invoice_trigger的觸發依據
 	PayType:"2", // 交易類別，請固定帶'2'
 	PayAct:"ECPAY", // 交易類別名稱，請固定帶'ECPAY'
-	NotifyURL:"" // 開立完成時通知會員系統的網址
+	NotifyURL:"" // 開立完成時通知賣家會員系統的網址
 };
 
 let create = new ecpay_invoice();
